@@ -7,17 +7,7 @@ function App() {
   const [author,setAuthor] = useState("");
   const colors = 
   ['#8C642B','#2F2504','#D64045','#5A0001','#2A3D45','#407076','#064C4C','#210124','#750D37','#123F3A','#0F440E']
-
-  const setUrl= ()=>{
-    const baseOfAnotherHost = 'https://twitter.com';
-    console.log(quote,author +"yazildi");
-    var text = quote+"     "+"-"+author;
-    const relativeOrAbsoluteURL = `https://twitter.com/intent/tweet?text=${text}`;
-    const absoluteUrl = new URL(relativeOrAbsoluteURL,baseOfAnotherHost).href;
-    let tweet = document.getElementById('tweet-quote');
-    tweet.href = absoluteUrl;
-  }
-
+  
   const fetchQuote = ()=>{
     fetch("https://type.fit/api/quotes")
     .then(function(response) {
@@ -26,13 +16,21 @@ function App() {
     .then(function(data) {
       var num = Math.floor(Math.random() * 1642)
       setQuote(data[num].text);
+      let varQuote = data[num].text;
+      let varAuthor ='';
       data[num].author ? setAuthor(data[num].author) : setAuthor('Anonym') ;
-
+      data[num].author ? varAuthor = data[num].author : varAuthor = 'Anonym' ;
       var color = colors[Math.floor(Math.random()*10)];
       document.getElementById('gradient').style.backgroundImage = `linear-gradient(${color},black)`;
       document.getElementById('quote-bg').style.backgroundColor = color;
+
+      const baseOfAnotherHost = 'https://twitter.com';
+      var text = varQuote+"     "+"-"+varAuthor;
+      const relativeOrAbsoluteURL = `https://twitter.com/intent/tweet?text=${text}`;
+      const absoluteUrl = new URL(relativeOrAbsoluteURL,baseOfAnotherHost).href;
+      let tweet = document.getElementById('tweet-quote');
+      tweet.href = absoluteUrl;
     });
-    setUrl()
   }
 
   useEffect(()=>{
